@@ -100,6 +100,42 @@ public:
       }
     }
   }
+
+  void dfs(int startVertex = 0)
+  {
+    // base case
+    if (!vertexExists(startVertex))
+      return;
+
+    // initialize adj structures
+    stack<int> pending;
+
+    bool visited[adj.size()];
+    for (int i = 0; i < adj.size(); i++)
+      visited[i] = false;
+
+    // first, mark off starting vertex as visited
+    visited[startVertex] = true;
+    // insert starting vertex in pending queue, so as to follow looping
+    pending.push(startVertex);
+
+    while (!pending.empty())
+    {
+      int currentVertex = pending.top();
+      cout << currentVertex << endl;
+      pending.pop();
+
+      for (int i = 0; i < adj[currentVertex].outwards.size(); i++)
+      {
+        if (!visited[adj[currentVertex].outwards[i]])
+        {
+          int nextVertex = adj[currentVertex].outwards[i];
+          visited[nextVertex] = true;
+          pending.push(nextVertex);
+        }
+      }
+    }
+  }
 };
 
 int main()
@@ -119,4 +155,6 @@ int main()
   g.addEdge(3, 4);
   g.printGraph();
   g.bfs();
+  cout << "---" << endl;
+  g.dfs();
 }

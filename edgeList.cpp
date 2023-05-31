@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <queue>
 using namespace std;
 
 // Vertices are denoted by numbers (no 2 distinct vertices will have the same value)
@@ -98,6 +97,44 @@ public:
       }
     }
   }
+
+  // assuming connected graph
+  // assuming noOfVertices > 0
+  void dfs(int startVertex = 0)
+  {
+    // base case
+    if (!vertexExists(startVertex))
+      return;
+
+    // initialize data structures
+    stack<int> pending;
+
+    bool visited[vertices.size()];
+    for (int i = 0; i < vertices.size(); i++)
+      visited[i] = false;
+
+    // first, mark off starting vertex as visited
+    visited[startVertex] = true;
+    // insert starting vertex in pending queue, so as to follow looping
+    pending.push(startVertex);
+
+    while (!pending.empty())
+    {
+      int currentVertex = pending.top();
+      cout << currentVertex << endl;
+      pending.pop();
+
+      for (int i = 0; i < edges.size(); i++)
+      {
+        if (edges[i].start == currentVertex && !visited[edges[i].end])
+        {
+          int nextVertex = edges[i].end;
+          visited[nextVertex] = true;
+          pending.push(nextVertex);
+        }
+      }
+    }
+  }
 };
 
 int main()
@@ -118,4 +155,6 @@ int main()
   g.addEdge(3, 4);
   g.printGraph();
   g.bfs();
+  cout << "---" << endl;
+  g.dfs();
 }

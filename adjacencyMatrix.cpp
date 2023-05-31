@@ -1,6 +1,4 @@
-#include <iostream>
-#include <cstring>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
 // ---- ASSUMPTIONS ----
@@ -90,6 +88,43 @@ public:
       }
     }
   }
+
+  // assuming noOfVertices > 0
+  void dfs(int startVertex = 0)
+  {
+    // base case
+    if (!vertexExists(startVertex))
+      return;
+
+    // initialize data structures
+    stack<int> pending;
+
+    bool visited[noOfVertices];
+    for (int i = 0; i < noOfVertices; i++)
+      visited[i] = false;
+
+    // first, mark off starting vertex as visited
+    visited[startVertex] = true;
+    // insert starting vertex in pending queue, so as to follow looping
+    pending.push(startVertex);
+
+    while (!pending.empty())
+    {
+      int currentVertex = pending.top();
+      cout << currentVertex << endl;
+      pending.pop();
+
+      for (int i = 0; i < noOfVertices; i++)
+      {
+        if (matrix[currentVertex][i] > 0 && !visited[i])
+        {
+          int nextVertex = i;
+          visited[nextVertex] = true;
+          pending.push(nextVertex);
+        }
+      }
+    }
+  }
 };
 
 int main()
@@ -104,4 +139,6 @@ int main()
   g.addEdge(3, 4);
   g.print();
   g.bfs();
+  cout << "---" << endl;
+  g.dfs();
 }
